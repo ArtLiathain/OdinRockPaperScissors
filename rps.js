@@ -1,4 +1,5 @@
 function playRound(playerSelection, computerSelection) {
+    playerSelection = playerSelection.target.getAttribute("data-action");
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
     if (playerSelection === computerSelection){
@@ -37,25 +38,30 @@ function getComputerChoice(){
     return "scissors"
 }
 
+const output = document.querySelector('.output');
+const buttons = document.querySelectorAll('.input');
+console.log(buttons);
+buttons.forEach(button => button.addEventListener('click', play));
+
 
 let playerpoints = 0, computerpoints = 0;
-while(playerpoints < 5 && computerpoints < 5){
-    let playerSelection = prompt("What would you like to use Rock, Paper or Scissors?");
-    let computerSelection = getComputerChoice();
-    let result  = playRound(playerSelection, computerSelection);
+function play(e){
+
+    let result  = playRound(e, getComputerChoice());
     if (result[1] === 1){
         playerpoints++;
     }
     else if ( result[1] === 0){
         computerpoints++;
     }
-    console.log(result[0]);
-    console.log("The score is Player at:" + playerpoints + " points and the computer at: " + computerpoints);
+    let concatString = result[0] + "\nThe Player is at:" + playerpoints + " points and the computer is at: " + computerpoints + "points";
+    output.innerText = concatString;
+
+    if (playerpoints > computerpoints && playerpoints >= 5){
+        output.innerText =  ("Player has won with 5 points and the computer at:" + computerpoints + " points");
+    }
+    else if (computerpoints >= 5) {
+        output.innerText = ("Computer has won with 5 points and the player at:" + playerpoints + " points")
+    }
 }
 
-if (playerpoints > computerpoints){
-    console.log("Player has won with 5 points and the computer at:" + computerpoints + " points");
-}
-else {
-    console.log("Computer has won with 5 points and the player at:" + playerpoints + " points")
-}
